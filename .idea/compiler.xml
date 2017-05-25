@@ -9,7 +9,7 @@
         <module name="bigdata" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="bigdata" target="1.8" />
     </bytecodeTargetLevel>
   </component>
