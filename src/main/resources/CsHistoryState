@@ -1,0 +1,47 @@
+private @caption("编号") @column("cshs_id")    @primary  @note("  ") Long cshsId;// 主键 非空
+	private @caption("授权系统") @column("cshs_access")     @relate("$cshsAccess") @RelateClass(SrvHost.class)  @note("  ") Long cshsAccess;// 非空
+ 	private SrvHost $cshsAccess;//关联对象[授权系统]
+	private @caption("子域") @column("cshs_host")     @note("  ") Long cshsHost;// 非空
+	private @caption("车机号") @column("cshs_number")     @note("  ") String cshsNumber;// 非空
+	private @caption("关联车辆") @column("cshs_car")     @relate("$cshsCar") @RelateClass(CsVehicle.class)  @note("  ") Long cshsCar;//
+ 	private CsVehicle $cshsCar;//关联对象[车辆信息]
+	private @caption("添加时间") @column("cshs_add_time")     @note("  ") Date cshsAddTime;// 非空
+	private @caption("下位机时间") @column("cshs_current_time")     @note("  ") Date cshsCurrentTime;//
+	private @caption("租赁状态") @column("cshs_rented")     @note("  ") String cshsRented;//
+	private @caption("有报警") @column("cshs_warn")     @note("  ") String cshsWarn;//
+	private @caption("RFID卡号") @column("cshs_rfid")     @note("  ") String cshsRfid;//
+	private @caption("用户RFID") @column("cshs_rfid_dte")     @note("  ") String cshsRfidDte;//
+	private @caption("OBD里程") @column("cshs_obd_mile")     @note("  ") String cshsObdMile;//
+	private @caption("发动机温度") @column("cshs_engine_t")     @note("  ") String cshsEngineT;//
+	private @caption("总里程") @column("cshs_mileage")     @note("  ") String cshsMileage;//
+	private @caption("车速") @column("cshs_speed")     @note("  ") String cshsSpeed;//
+	private @caption("转速") @column("cshs_motor")     @note("  ") String cshsMotor;//
+	private @caption("燃油量") @column("cshs_oil")     @note("  ") String cshsOil;//
+	private @caption("蓄电量") @column("cshs_power")     @note("  ") String cshsPower;//
+	private @caption("动力电池电量") @column("cshs_ev_battery")     @note("  ") String cshsEvBattery;//
+	private @caption("在充电") @column("cshs_charging")     @note("  ") String cshsCharging;//
+	private @caption("油里程") @column("cshs_fuel_mileage")     @note("  ") String cshsFuelMileage;//
+	private @caption("电量程") @column("cshs_electric_mileage")     @note("  ") String cshsElectricMileage;//
+	private @caption("续航里程") @column("cshs_endurance")     @note("  ") String cshsEndurance;//
+	private @caption("温度") @column("cshs_temperature")     @note("  ") String cshsTemperature;//
+	private @caption("信号强度") @column("cshs_csq")     @note("  ") String cshsCsq;//
+	private @caption("功耗") @column("cshs_power_consumption")     @note("  ") String cshsPowerConsumption;//
+	private @caption("经度") @column("cshs_longitude")     @note("  ") String cshsLongitude;//
+	private @caption("纬度") @column("cshs_latitude")     @note("  ") String cshsLatitude;//
+	private @caption("方向角度") @column("cshs_dir")     @note("  ") String cshsDir;//
+	private @caption("循环模式") @column("cshs_circular")     @note(" 0:内循环 1:外循环  ") String cshsCircular;// 0:内循环 1:外循环
+	private @caption("PTC启停") @column("cshs_ptc")     @note(" 0:OFF 1:ON  ") String cshsPtc;// 0:OFF 1:ON
+	private @caption("压缩机") @column("cshs_compres")     @note(" 0:OFF 1:ON  ") String cshsCompres;// 0:OFF 1:ON
+	private @caption("档风量") @column("cshs_fan")     @note(" 0:OFF 1:1档 2:2档 3:3档 4:4档  ") String cshsFan;// 0:OFF 1:1档 2:2档 3:3档 4:4档
+	private @caption("省电模式") @column("cshs_saving")     @note(" 0:标准模式 1:最佳省电 2:极度省电  ") String cshsSaving;// 0:标准模式 1:最佳省电 2:极度省电
+	private @caption("车门状态") @column("cshs_door")     @note("  ") String cshsDoor;//
+	private @caption("发动机") @column("cshs_engine")     @note("1未熄火，2已熄火，0无效") Long cshsEngine;//
+	private @caption("钥匙") @column("cshs_key")     @note("1插入，2拔出，0无效") Long cshsKey;//
+	private @caption("车灯") @column("cshs_light")     @note("1未关，2全关，0无效") Long cshsLight;//
+	private @caption("锁") @column("cshs_lock")     @note("1未关，2全关，0无效") Long cshsLock;//
+	private @caption("网络类型") @column("cshs_net_type")     @relate("$cshsNetType") @RelateClass(SrvProperty.class)  @note("  ") Long cshsNetType;//    state_net_type:当前状态网络类型
+ 	private SrvProperty $cshsNetType;//关联对象[系统属性]
+	private @caption("基站LAC") @column("cshs_base_lac")     @note("  ") String cshsBaseLac;//
+	private @caption("基站CI") @column("cshs_base_ci")     @note("  ") String cshsBaseCi;//
+	private @caption("当前订单") @column("cshs_order") @like    @note("  ") String cshsOrder;//
+	private @caption("接口数据") @column("cshs_mo_data") @like    @note("  ") String cshsMoData;//
