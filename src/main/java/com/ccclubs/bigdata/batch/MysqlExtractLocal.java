@@ -49,10 +49,14 @@ public class MysqlExtractLocal {
 //            }
 //        });
         cs_machine_ds.registerTempTable("cs_machine");
+
         Dataset<Row> filter_ds = sqlContext.sql(" select a.csm_protocol,count(a.csm_id) from cs_machine a " +
                 " where a.csm_protocol is not null "+
                 " group by a.csm_protocol ");
         filter_ds.show();
+
+        System.out.println("我都执行完了");
         sc.close();
+
     }
 }
