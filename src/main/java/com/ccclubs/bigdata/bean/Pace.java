@@ -6,6 +6,8 @@ package com.ccclubs.bigdata.bean;
 public class Pace {
     //车机号
     private String cshsNumber;
+    //授权系统
+    private int cshsAccess;
     //状态阶段统计年份
     private int state_year;
     //状态阶段统计月份
@@ -13,15 +15,64 @@ public class Pace {
     //状态阶段月内统计行号
     private int month_rownum;
     //状态阶段统计起始时间
-    private String state_start_time;
+    private long start_state_mills;
     //状态阶段统计结束时间
-    private String state_end_time;
+    private long end_state_mills;
     //状态持续时间(单位:毫秒)
     private long state_lastmills;
-    //状态种类(1:充电  2:行驶)
+    //状态种类(1:充电  2:驾驶  3:闲置)
     private int state_type;
     //状态子分类
     private int sub_state_type;
+    //电量变化百分比
+    private int changed_battery;
+    //阶段开始行驶里程数
+    private long start_obd_miles;
+    //阶段结束行驶里程数
+    private long end_obd_miles;
+    //阶段行驶里程变化
+    private long changed_obd_miles;
+
+    public long getChanged_obd_miles() {
+        return changed_obd_miles;
+    }
+
+    public void setChanged_obd_miles(long changed_obd_miles) {
+        this.changed_obd_miles = changed_obd_miles;
+    }
+
+    public int getCshsAccess() {
+        return cshsAccess;
+    }
+
+    public void setCshsAccess(int cshsAccess) {
+        this.cshsAccess = cshsAccess;
+    }
+
+    public int getChanged_battery() {
+        return changed_battery;
+    }
+
+    public void setChanged_battery(int changed_battery) {
+        this.changed_battery = changed_battery;
+    }
+
+    public long getStart_obd_miles() {
+        return start_obd_miles;
+    }
+
+    public void setStart_obd_miles(long start_obd_miles) {
+        this.start_obd_miles = start_obd_miles;
+    }
+
+    public long getEnd_obd_miles() {
+        return end_obd_miles;
+    }
+
+    public void setEnd_obd_miles(long end_obd_miles) {
+        this.end_obd_miles = end_obd_miles;
+    }
+
     //记录是否有效(0:无效  1:有效)
     private int active_flg;
 
@@ -57,20 +108,20 @@ public class Pace {
         this.month_rownum = month_rownum;
     }
 
-    public String getState_start_time() {
-        return state_start_time;
+    public long getStart_state_mills() {
+        return start_state_mills;
     }
 
-    public void setState_start_time(String state_start_time) {
-        this.state_start_time = state_start_time;
+    public void setStart_state_mills(long start_state_mills) {
+        this.start_state_mills = start_state_mills;
     }
 
-    public String getState_end_time() {
-        return state_end_time;
+    public long getEnd_state_mills() {
+        return end_state_mills;
     }
 
-    public void setState_end_time(String state_end_time) {
-        this.state_end_time = state_end_time;
+    public void setEnd_state_mills(long end_state_mills) {
+        this.end_state_mills = end_state_mills;
     }
 
     public long getState_lastmills() {

@@ -1,11 +1,11 @@
 package com.ccclubs.bigdata.batch;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.ccclubs.bigdata.bean.Pace;
 import com.ccclubs.bigdata.extend.ChsNumberPartitioner;
 import com.ccclubs.bigdata.extend.TimeComparator;
 import com.ccclubs.bigdata.util.DBHelper;
 import com.ccclubs.bigdata.util.DateTimeUtil;
+import com.ccclubs.bigdata.util.PaceIntervalTool;
 import com.google.common.collect.Ordering;
 import com.mongodb.spark.MongoSpark;
 import org.apache.log4j.Level;
@@ -14,11 +14,11 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
+import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import scala.Tuple2;
-import scala.reflect.internal.util.*;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -41,12 +41,17 @@ public class IndexCalcTest {
                 .config("spark.mongodb.output.uri", "mongodb://tsm_user:tsm2017@114.55.24.97:3717/history.CsHistoryState")
                 .getOrCreate();
         JavaSparkContext jsc = new JavaSparkContext(sparkSession.sparkContext());
+
         Dataset<Row> history_states_df = MongoSpark.load(jsc).toDF();
         //history_states_df.cache();
         history_states_df.createOrReplaceTempView("CsHistoryState");
         DBHelper dbHelper = new DBHelper();
-        long start_timemills= DateTimeUtil.Date2UnixFormat("2017-05-30 00:00:00",DateTimeUtil.format1);
+        long start_timemills= DateTimeUtil.Date2UnixFormat("2017-05-01 00:00:00",DateTimeUtil.format1);
         long end_timemills = DateTimeUtil.Date2UnixFormat("2017-05-31 23:59:59",DateTimeUtil.format1);
+
+        Broadcast<Integer> year_broadcast = jsc.broadcast(DateTimeUtil.getYear(start_timemills));
+        Broadcast<Integer> month_broadcast = jsc.broadcast(DateTimeUtil.getMonth(start_timemills));
+
         Map<String,Integer> chsMap = new HashMap<>();
         chsMap.put("T6710239",0);
         chsMap.put("T6710274",1);
@@ -82,9 +87,11 @@ public class IndexCalcTest {
                 Ordering<Row> rowOrdering = Ordering.from(timeComparator);
                 Collections.sort(rowList,rowOrdering);
 //                for(Row row:rowList){
-//                    logger.info("车机号:"+row.getAs("cshsNumber")+" 上传时间:"+row.getAs("cshsCurrentTime")+" 电量百分比:"+row.getAs("cshsEvBattery")+" 车速:"+row.getAs("cshsSpeed"));
+//                    logger.info("车机号:"+row.getAs("cshsNumber")+" 上传时间:"+row.getAs("cshsCurrentTime")+" 电量百分比:"+row.getAs("cshsEvBattery")+" 车速:"+row.getAs("cshsSpeed")+" 总里程:"+row.getAs("cshsObdMile"));
 //                }
-
+                PaceIntervalTool paceIntervalTool = new PaceIntervalTool(rowList,year_broadcast.getValue(),month_broadcast.getValue());
+                List<Pace> paceList = paceIntervalTool.calcPaceData();
+                logger.info("");
                 return rowIterator;
             }
 
@@ -93,7 +100,5 @@ public class IndexCalcTest {
          .take(1)
         ;
 
-
-        System.out.println("终于统计完了");
     }
 }
