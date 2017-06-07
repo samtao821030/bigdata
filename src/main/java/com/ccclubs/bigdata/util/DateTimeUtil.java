@@ -39,7 +39,7 @@ public class DateTimeUtil {
         int month = 0;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMills);
-        month = calendar.get(Calendar.MONTH);
+        month = calendar.get(Calendar.MONTH)+1;
         return month;
     }
 

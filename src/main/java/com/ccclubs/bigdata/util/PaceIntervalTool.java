@@ -42,10 +42,68 @@ public class PaceIntervalTool {
         Iterator<Map.Entry<Long,DataBlock>> iterator = blockMap.entrySet().iterator();
 
         int state_type = -1;
+        int changed_battery = 0;
+        long changed_obd_miles=0;
         Pace pace = null;
         while(iterator.hasNext()){
             Map.Entry<Long,DataBlock> entry = iterator.next();
             DataBlock dataBlock = entry.getValue();
+            BlockStatusUtil.judgeBlockStatus(dataBlock);
+
+            //得到当前数据块的状态
+            int current_state_type = dataBlock.getState_type();
+
+            //生成新阶段
+            if(state_type!=current_state_type){
+                //进行相关状态位的重置
+                state_type=current_state_type;
+                changed_battery = 0;
+                changed_obd_miles=0;
+
+                pace = new Pace();
+                //设置车机号
+                pace.setCshsNumber(historyStateRecord.getCshsNumber());
+                //设置授权号
+                pace.setCshsAccess(historyStateRecord.getCshsAccess());
+                //设置阶段状态
+                pace.setState_type(current_state_type);
+                //设置统计年
+                pace.setState_year(this.year);
+                //设置统计月
+                pace.setState_month(this.month);
+                //设置阶段开始时间
+                pace.setStart_state_mills(dataBlock.getBlock_startmills());
+
+                //设置阶段开始总里程数
+                pace.setStart_obd_miles(dataBlock.getStart_obd_miles());
+
+                //累加电量变化
+                changed_battery+=dataBlock.getChanged_battery();
+                //累加里程数变化
+                changed_obd_miles+=dataBlock.getChanged_obd_miles();
+
+                pace.setChanged_battery(changed_battery);
+                pace.setChanged_obd_miles(changed_obd_miles);
+                pace.setEnd_state_mills(dataBlock.getBlock_startmills()+BlockStatusUtil.time_interval*60*1000);
+                pace.setEnd_obd_miles(dataBlock.getEnd_obd_miles());
+
+                paceList.add(pace);
+
+
+            }
+            else{
+                if(pace!=null){
+                    //累加电量变化
+                    changed_battery+=dataBlock.getChanged_battery();
+                    //累加里程数变化
+                    changed_obd_miles+=dataBlock.getChanged_obd_miles();
+
+                    pace.setChanged_battery(changed_battery);
+                    pace.setChanged_obd_miles(changed_obd_miles);
+                    pace.setEnd_state_mills(dataBlock.getBlock_startmills()+BlockStatusUtil.time_interval*60*1000);
+                    pace.setEnd_obd_miles(dataBlock.getEnd_obd_miles());
+                }
+            }
 
         }
 

@@ -28,6 +28,28 @@ public class DataBlock {
     //block起始时间
     private long block_startmills;
 
+    //block起始电量百分比
+    private int block_startbattery;
+
+    //block结束电量百分比
+    private int block_endbattery;
+
+    public int getBlock_endbattery() {
+        return block_endbattery;
+    }
+
+    public void setBlock_endbattery(int block_endbattery) {
+        this.block_endbattery = block_endbattery;
+    }
+
+    public int getBlock_startbattery() {
+        return block_startbattery;
+    }
+
+    public void setBlock_startbattery(int block_startbattery) {
+        this.block_startbattery = block_startbattery;
+    }
+
     //该数据块内记录列表
     private List<HistoryStateRecord> recordList=new ArrayList<>();
 

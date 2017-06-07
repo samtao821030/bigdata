@@ -1,5 +1,7 @@
 package com.ccclubs.bigdata.bean;
 
+import com.ccclubs.bigdata.util.DateTimeUtil;
+
 /**
  * Created by Administrator on 2017/6/1 0001.
  */
@@ -18,10 +20,18 @@ public class Pace {
     private long start_state_mills;
     //状态阶段统计结束时间
     private long end_state_mills;
+
+    //状态阶段统计起始时间(标准时间格式)
+    private long start_state_datetime;
+    //状态阶段统计结束时间(标准时间格式)
+    private long end_state_datetime;
+
     //状态持续时间(单位:毫秒)
     private long state_lastmills;
     //状态种类(1:充电  2:驾驶  3:闲置)
     private int state_type;
+    //状态种类字符串
+    private String state_type_str;
     //状态子分类
     private int sub_state_type;
     //电量变化百分比
@@ -32,6 +42,30 @@ public class Pace {
     private long end_obd_miles;
     //阶段行驶里程变化
     private long changed_obd_miles;
+
+    public String getState_type_str() {
+        if(state_type==1){
+            state_type_str="充电";
+        }else if(state_type==2){
+            state_type_str="驾驶";
+        }else if(state_type==3){
+            state_type_str="闲置";
+        }
+        return state_type_str;
+    }
+
+    public String getStart_state_datetime() {
+        String start_state_datetime= DateTimeUtil.getDateTimeByFormat1(start_state_mills);
+        return start_state_datetime;
+    }
+
+
+    public String getEnd_state_datetime() {
+        String end_state_datetime= DateTimeUtil.getDateTimeByFormat1(end_state_mills);
+        return end_state_datetime;
+    }
+
+
 
     public long getChanged_obd_miles() {
         return changed_obd_miles;
@@ -66,6 +100,9 @@ public class Pace {
     }
 
     public long getEnd_obd_miles() {
+        if(end_obd_miles<start_obd_miles){
+            end_obd_miles=start_obd_miles;
+        }
         return end_obd_miles;
     }
 

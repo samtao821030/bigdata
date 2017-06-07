@@ -12,7 +12,7 @@ public class BlockStatusUtil {
     //数据块时间间隔
     public static final int time_interval=12;
 
-    public int judgeBlockStatus(DataBlock dataBlock){
+    public static int judgeBlockStatus(DataBlock dataBlock){
         int state_type = -1;
         List<HistoryStateRecord> recordList = dataBlock.getRecordList();
         int changed_battery = 0;
@@ -26,6 +26,10 @@ public class BlockStatusUtil {
         int total_speed=0;
         //若该数据块内不存在数据上传记录,则视为该数据块内的状态为闲置状态
         if(recordList.size()==0){
+            //设置开始行驶里程数
+            dataBlock.setStart_obd_miles(start_obd_miles);
+            //设置结束行驶里程数
+            dataBlock.setEnd_obd_miles(end_obd_miles);
             state_type=3;
         }
         else{
@@ -75,9 +79,9 @@ public class BlockStatusUtil {
             else{
                 state_type=3;
             }
-            dataBlock.setState_type(state_type);
-        }
 
+        }
+        dataBlock.setState_type(state_type);
         return state_type;
     }
 }

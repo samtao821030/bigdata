@@ -84,14 +84,23 @@ public class IndexCalcTest {
                 while(rowIterator.hasNext()){
                     rowList.add(rowIterator.next());
                 }
-                Ordering<Row> rowOrdering = Ordering.from(timeComparator);
-                Collections.sort(rowList,rowOrdering);
+                if(rowList.size()>0) {
+                    Ordering<Row> rowOrdering = Ordering.from(timeComparator);
+                    Collections.sort(rowList, rowOrdering);
 //                for(Row row:rowList){
 //                    logger.info("车机号:"+row.getAs("cshsNumber")+" 上传时间:"+row.getAs("cshsCurrentTime")+" 电量百分比:"+row.getAs("cshsEvBattery")+" 车速:"+row.getAs("cshsSpeed")+" 总里程:"+row.getAs("cshsObdMile"));
 //                }
-                PaceIntervalTool paceIntervalTool = new PaceIntervalTool(rowList,year_broadcast.getValue(),month_broadcast.getValue());
-                List<Pace> paceList = paceIntervalTool.calcPaceData();
-                logger.info("");
+                    PaceIntervalTool paceIntervalTool = new PaceIntervalTool(rowList, year_broadcast.getValue(), month_broadcast.getValue());
+                    List<Pace> paceList = paceIntervalTool.calcPaceData();
+                    for(Pace pace:paceList){
+                        logger.info(" 车机号:"+pace.getCshsNumber()
+                                +" 状态:"+pace.getState_type_str()
+                                +" 起始时间:"+pace.getStart_state_datetime()
+                                +" 结束时间:"+pace.getEnd_state_datetime()
+                                +" 行驶里程数:"+pace.getChanged_obd_miles()
+                                +" 电量变化:"+pace.getChanged_battery());
+                    }
+                }
                 return rowIterator;
             }
 
